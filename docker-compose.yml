@@ -1,0 +1,32 @@
+services:
+  app:
+    build: .
+    container_name: app
+    ports:
+      - '${BASE_SERVICE}:${BASE_SERVICE}'
+    volumes:
+      - .:/usr/src/app
+      - /usr/src/app/node_modules
+    environment:
+      - POSTGRES_HOST=${DB_HOST}
+      - POSTGRES_PORT=${DB_PORT}
+      - POSTGRES_USER=${DB_USER}
+      - POSTGRES_PASSWORD=${DB_PASS}
+      - POSTGRES_DB=${DB}
+
+  db:
+    image: postgres:15-alpine
+    container_name: db
+    environment:
+      - POSTGRES_USER=${DB_USER}
+      - POSTGRES_PASSWORD=${DB_PASS}
+      - POSTGRES_DB=${DB}
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    ports:
+      - '${DB_PORT}:${DB_PORT}'
+
+volumes:
+  postgres-data:
+
+
